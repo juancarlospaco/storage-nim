@@ -2,12 +2,12 @@ import std/[httpclient, json]
 
 type
   SyncStorageClient* = object
-    url*: string             # https://github.com/supabase/functions-js/blob/19512a44aa3b8e4ea89a825899a4e1b2223368af/src/FunctionsClient.ts#L27
-    client: HttpClient       # https://github.com/supabase/functions-js/blob/19512a44aa3b8e4ea89a825899a4e1b2223368af/src/FunctionsClient.ts#L30
+    url*: string
+    client: HttpClient
 
   AsyncStorageClient* = object
-    url*: string             # https://github.com/supabase/functions-js/blob/19512a44aa3b8e4ea89a825899a4e1b2223368af/src/FunctionsClient.ts#L27
-    client: AsyncHttpClient  # https://github.com/supabase/functions-js/blob/19512a44aa3b8e4ea89a825899a4e1b2223368af/src/FunctionsClient.ts#L30
+    url*: string
+    client: AsyncHttpClient
 
 proc close*(self: SyncStorageClient | AsyncStorageClient) {.inline.} = self.client.close()
 
