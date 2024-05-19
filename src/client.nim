@@ -69,8 +69,7 @@ proc createSignedUrls*(self: SyncStorageClient | AsyncStorageClient; paths: seq[
 proc createSignedUploadUrl*(self: SyncStorageClient | AsyncStorageClient; path: string): auto =
   api(endpoint = "/object/upload/sign/" & id & '/' & path, metod = HttpPost, headers = nil, body = [])
 
-
-
+# Complex code below
 
 proc uploadToSignedUrl*(self: SyncStorageClient | AsyncStorageClient; path, fileBody, token: string; cacheControl = 3600.Positive; upsert = false ): auto =
   api(endpoint = "/object/upload/sign/" & id & '/' & path, metod = HttpPost, headers = {"Cache-Control": "max-age=" & $cacheControl}, body = [])
