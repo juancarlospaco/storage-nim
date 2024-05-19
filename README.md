@@ -1,1 +1,1 @@
-# storage-nim
+# Supabase Edge Functions API Client
