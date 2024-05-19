@@ -69,10 +69,11 @@ proc createSignedUrls*(self: SyncStorageClient | AsyncStorageClient; paths: seq[
 proc createSignedUploadUrl*(self: SyncStorageClient | AsyncStorageClient; path: string): auto =
   api(endpoint = "/object/upload/sign/" & id & '/' & path, metod = HttpPost, headers = nil, body = [])
 
-# Complex code below
+
+
 
 proc uploadToSignedUrl*(self: SyncStorageClient | AsyncStorageClient; path, fileBody, token: string; cacheControl = 3600.Positive; upsert = false ): auto =
-  api(endpoint = "/object/upload/sign/" & id & '/' & path, metod = HttpPost, headers = {"Cache-Control": "max-age=" & $cacheControl}, body = [])
+  api(endpoint = "/object/upload/sign/" & id & '/' & path, metod = HttpPost, headers = {"Cache-Control": "max-age=" & $cacheControl}, body = fileBody)
 
 proc getPublicUrl*(self: SyncStorageClient | AsyncStorageClient; path: string; download = false): auto =
   api(endpoint = "/object/upload/sign/" & id & '/' & path, metod = HttpPost, headers = {"Cache-Control": "max-age=" & $cacheControl}, body = [])
@@ -84,7 +85,7 @@ proc upload*(self: SyncStorageClient | AsyncStorageClient; path, fileBody: strin
   api(endpoint = "/object/" & id '/' & path, metod = HttpPost, headers = {"Cache-Control": "max-age=" & $cacheControl}, body = fileBody)
 
 proc update*(self: SyncStorageClient | AsyncStorageClient; path, fileBody: string; cacheControl = 3600.Positive; upsert = false): auto =
-  api(endpoint = "/object/upload/sign/" & id & '/' & path, metod = HttpPut, headers = {"Cache-Control": "max-age=" & $cacheControl, "x-upsert": $upsert}, body = [])
+  api(endpoint = "/object/upload/sign/" & id & '/' & path, metod = HttpPut, headers = {"Cache-Control": "max-age=" & $cacheControl, "x-upsert": $upsert}, body = fileBody)
 
 
 # https://supabase.com/docs/reference/javascript/storage-from-move
