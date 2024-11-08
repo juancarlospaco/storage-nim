@@ -1,4 +1,4 @@
-import std/[httpclient, json]
+import std/[httpclient, json, assertions]
 
 type
   SyncStorageClient* = object
@@ -9,14 +9,20 @@ type
     url*: string
     client: AsyncHttpClient
 
+template is_ok_arg(url, apiKey: string) =
+  assert url.len > 0, "url must be a valid HTTP URL string"
+  assert apiKey.len > 0, "apiKey must be a valid JWT string"
+
 proc close*(self: SyncStorageClient | AsyncStorageClient) {.inline.} = self.client.close()
 
 proc newSyncStorageClient*(url, apiKey: string; maxRedirects = 9.Positive; timeout: -1..int.high = -1; proxy: Proxy = nil): SyncStorageClient =
+  is_ok_arg(url, apiKey)
   SyncStorageClient(url: url, client: newHttpClient(userAgent="supabase/storage3-nim v" & NimVersion, maxRedirects=maxRedirects, timeout=timeout, proxy=proxy,
     headers=newHttpHeaders({"Content-Type": "application/json", "Connection": "Keep-Alive", "DNT": "1", "Authorization": "Bearer " & apiKey})
   ))
 
 proc newASyncStorageClient*(url, apiKey: string; maxRedirects = 9.Positive; timeout: -1..int.high = -1; proxy: Proxy = nil): AsyncStorageClient =
+  is_ok_arg(url, apiKey)
   AsyncStorageClient(url: url, client: newAsyncHttpClient(userAgent="supabase/storage3-nim v" & NimVersion, maxRedirects=maxRedirects, proxy=proxy,
     headers=newHttpHeaders({"Content-Type": "application/json", "Connection": "Keep-Alive", "DNT": "1", "Authorization": "Bearer " & apiKey})
   ))
